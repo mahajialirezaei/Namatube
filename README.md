@@ -1,177 +1,272 @@
-# 🎬 NamaFront – System Analysis & Design for a Video Sharing Platform
+# 🎥 Namatube
 
-> **Course Project: System Analysis & Design**  
-> **No server-side implementation – purely analysis, design, and documentation**
+<div align="center">
 
----
+![Architecture Diagram](docs/figures/Architecture-Diagram.png)
 
-## 📌 Project Overview
+**A modern, scalable video sharing platform built with microservices architecture**
 
-**NamaFront** is an interactive, responsive user interface built using HTML5, CSS3, and Vanilla JavaScript. Key characteristics include: Comprehensive UI, Educational Elements, Dynamic Integration
+[![License: Custom](https://img.shields.io/badge/License-Custom-blue.svg)](LICENSE)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](docker-compose.yml)
+[![React](https://img.shields.io/badge/React-Frontend-61DAFB?logo=react&logoColor=black)](NamaFront/)
+[![Django](https://img.shields.io/badge/Django-Backend-092E20?logo=django&logoColor=white)](NamaBackend/)
 
-**Key decisions:**
-- We chose **traditional document-based requirements** (Word/PDF) over Jira to keep the SRS self-contained and version-controlled.
-- The project is **analysis and design only** – no backend code.
+</div>
 
-- **Topic:** Video sharing platform  
-- **Approach:** Microservices architecture, cloud deployment, REST API  
-- **Deliverables:**  
-  - Functional Requirements document (Word/PDF)  
-  - Non-Functional Requirements document (Word/PDF)  
-  - System Architecture Document (Word/PDF) with all diagrams  
-  - Interactive HTML/CSS/JS prototype (no backend)  
-- **Team:**  
-  - **Farazin Farahmand** – Requirements documentation (functional & non-functional)  
-  - **Mohammad Amin Haji Alirezaei** – HTML/CSS prototype, architecture diagrams, final PDF formatting
+## 📋 Table of Contents
 
----
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Development](#development)
+- [License](#license)
+- [Contact](#contact)
 
-## 🗂 Repository Structure
+## 🎯 Overview
+
+Namatube is a comprehensive video sharing platform designed with modern microservices architecture. It provides a YouTube-like experience with features including video upload, streaming, user interactions, recommendations, and channel management.
+
+The platform is built to support high concurrent loads (1000+ users), maintain 99.9% uptime, and deliver adaptive video streaming through CDN integration.
+
+## 🏗️ Architecture
+
+Namatube follows a **microservices architecture** with complete separation of concerns:
+
+### System Components
+
+![Components Diagram](docs/figures/Components-Diagram.png)
+
+**Core Microservices:**
+- **Auth Service**: JWT authentication, OAuth (Google/GitHub), 2FA
+- **Video Service**: Upload, transcoding (FFmpeg), streaming management
+- **Interaction Service**: Likes, comments, subscriptions
+- **Channel Service**: Channel profiles, playlists, video listings
+- **Admin Service**: User management, reporting, network simulation
+- **Search Service**: Elasticsearch-powered full-text search
+- **Recommendation Service**: Personalized video recommendations
+
+**Infrastructure:**
+- **API Gateway**: Nginx/Kong for routing and rate limiting
+- **Message Queue**: RabbitMQ for asynchronous video processing
+- **Databases**: 
+  - PostgreSQL (relational data)
+  - MongoDB (metadata/comments)
+  - Redis (caching)
+  - MinIO/S3 (object storage for media)
+
+### Deployment Architecture
+
+![Deployment Diagram](docs/figures/Deployment-Diagram.png)
+
+### Data Flow
+
+![Data Flow Diagram](docs/figures/Data-Flow-Diagram.png)
+
+## ✨ Features
+
+### User Features
+- 🔐 User registration and authentication (Email, OAuth)
+- 📹 Video upload with automatic transcoding to multiple resolutions
+- 🎬 Adaptive bitrate streaming
+- 👍 Like/Dislike videos and comments
+- 💬 Comment system with threaded replies
+- 🔔 Subscription and notification system
+- 🔍 Full-text search with advanced filtering
+- 📊 Personalized recommendations
+- 📱 Responsive UI (mobile and desktop)
+- 🌍 Multilingual support (including Persian/RTL)
+
+### Content Creator Features
+- 📺 Channel management
+- 📋 Playlist creation and management
+- 🔒 Video privacy settings (Public/Unlisted/Private)
+- 📈 Video analytics and metrics
+
+### Admin Features
+- 👥 User management and moderation
+- 🚫 Content moderation and violation reporting
+- 📊 System monitoring and health checks
+- 🌐 Network simulation tools
+
+## 🛠️ Tech Stack
+
+### Frontend (NamaFront)
+- **Framework**: React
+- **State Management**: TBD
+- **HTTP Client**: Axios
+- **UI Components**: TBD
+
+### Backend (NamaBackend)
+- **Framework**: Django + Django REST Framework
+- **Authentication**: JWT, OAuth2
+- **Video Processing**: FFmpeg
+- **Task Queue**: Celery + RabbitMQ
+
+### Infrastructure
+- **Containerization**: Docker + Docker Compose
+- **Orchestration**: Kubernetes (production)
+- **Databases**: PostgreSQL, MongoDB, Redis
+- **Object Storage**: MinIO (local), S3 (production)
+- **CDN**: CloudFront / Custom CDN
+- **API Gateway**: Nginx / Kong
+- **Monitoring**: CloudWatch, Structured JSON logging
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Docker (>= 20.10)
+- Docker Compose (>= 2.0)
+- Git
+
+### Quick Start
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/Namatube.git
+cd Namatube
+```
+
+2. **Start the entire stack**
+```bash
+docker-compose up -d
+```
+
+This single command will spin up:
+- All microservices (Auth, Video, Interaction, Channel, Admin, Search, Recommendation)
+- PostgreSQL database
+- MongoDB
+- Redis cache
+- RabbitMQ message queue
+- MinIO object storage
+- API Gateway
+- Frontend application
+
+3. **Access the application**
+- Frontend: http://localhost:3000
+- API Gateway: http://localhost:8000
+- MinIO Console: http://localhost:9001
+
+### Environment Configuration
+
+Copy the example environment file and configure:
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your configuration (database credentials, API keys, etc.)
+
+## 📁 Project Structure
 
 ```
-sad-project/
-├── README.md
-├── .gitignore
-│
-├── docs/                              # Final documentation (Word & PDF)
-│   ├── Functional.docx
-│   ├── Functional.pdf
-│   ├── Non-Functional.docx
-│   ├── Non-Functional.pdf
-│   ├── System-Architecture-Document.docx
-│   ├── System-Architecture-Document.pdf
-│   └── figures/                       # Diagram images
-│       ├── Architecture-Diagram.png
-│       ├── Components-Diagram.png
-│       ├── Data-Flow-Diagram.png
-│       └── Deployment-Diagram.png
-│
-└── prototype/                         # Static HTML/CSS/JS prototype
-├── index.html
-├── watch.html
-├── upload.html
-├── login.html
-├── channel.html
-├── admin.html
-├── history.html
-├── trending.html
-├── subscriptions.html
-├── library.html
-├── css/
-│   ├── style.css
-│   ├── admin.css
-│   ├── channel.css
-│   ├── login.css
-│   ├── upload.css
-│   ├── watch.css
-│   └── library.css
-├── js/
-│   ├── sidebar.js
-│   ├── click-send-video.js
-│   ├── recieve-video.js
-│   ├── video-click-channel.js
-│   ├── list-video.js
-│   ├── history.js
-│   ├── library.js
-│   ├── trending.js
-│   ├── login.js
-│   ├── upload.js
-│   └── channel.js
-└── assets/
-└── images/                     # Thumbnails and icons
-├── containers-vms.png
-├── K8s-orchestrasation.jpg
-├── micro-service.png
-├── modern-ui.png
-├── private-public-ipv4.png
-├── restful-api.png
-├── Subnetting.jpg
-└── two-factor.jpg
+Namatube/
+├── NamaFront/              # React frontend application
+├── NamaBackend/            # Django microservices
+│   ├── auth_service/
+│   ├── video_service/
+│   ├── interaction_service/
+│   ├── channel_service/
+│   ├── admin_service/
+│   ├── search_service/
+│   └── recommendation_service/
+├── docs/                   # Documentation
+│   ├── figures/            # Architecture diagrams
+│   ├── Functional.md       # Functional requirements
+│   ├── Non-Functional.md   # Non-functional requirements
+│   └── System-Architecture-Document.md
+├── .specify/               # Project governance
+│   └── memory/
+│       └── constitution.md # Project constitution
+├── API.md                  # API contract documentation
+├── STRUCTURE.md            # Project structure guide
+├── AGENTS.md               # AI agent guidelines
+├── docker-compose.yml      # Local development orchestration
+└── README.md               # This file
 ```
 
----
+## 📚 API Documentation
 
-## 📄 Documentation
+All API endpoints are documented in [API.md](API.md). The API follows RESTful principles with:
+- JWT-based authentication
+- Standardized JSON responses
+- Comprehensive error handling
+- Rate limiting (1000 req/hour authenticated, 100 req/hour public)
 
-All requirements and design documents are stored in the `docs/` folder:
+Key endpoint groups:
+- `/api/v1/auth/*` - Authentication
+- `/api/v1/videos/*` - Video management
+- `/api/v1/channels/*` - Channel operations
+- `/api/v1/search` - Search functionality
+- `/api/v1/recommendations` - Personalized recommendations
 
-- **Functional Requirements** (`Functional.pdf`) – detailed list of features with priorities (High/Medium/Low), revision history, and use cases.
-- **Non-Functional Requirements** (`Non-Functional.pdf`) – quality attributes, architecture, security, scalability, network simulation, etc.
-- **System Architecture Document** (`System-Architecture-Document.pdf`) – includes four diagrams:
-  - Architecture Diagram (microservices, API Gateway, data layer)
-  - Component Diagram (internal structure of each service)
-  - Deployment Diagram (Kubernetes, Docker, cloud infrastructure)
-  - Data Flow Diagram (Level 0 & 1)
+## 💻 Development
 
-> The documents follow a traditional SRS format with version history and have been exported to PDF for easy viewing.
+### Running Tests
 
----
+```bash
+# Frontend tests
+cd NamaFront && npm test
 
-## 🎨 Static Prototype
+# Backend tests
+cd NamaBackend && python manage.py test
+```
 
-The `prototype/` folder contains a fully interactive front-end prototype (no backend). It includes all major pages:
+### CI/CD
 
-- **Home** – video grid, sidebar, search bar
-- **Watch** – video player with blurred thumbnail, comments, recommendations
-- **Upload** – form for video title, description, category, privacy, file selection
-- **Login / Signup** – tabs with 2FA option (only in signup) and social login placeholders
-- **Channel** – channel banner, avatar, tabs (Videos, Playlists, About) with playlist alerts
-- **Admin Panel** – stats, network simulation (subnetting, NAT, DHCP, IPv4), user management table, reports
-- **History, Trending, Subscriptions, Library** – additional content pages
+All branches are automatically tested via GitHub Actions:
+- Linting
+- Unit tests
+- Integration tests
+- Build verification
 
-**Interactive behaviors (static, alert-based):**
-- Clicking any video card navigates to `watch.html` and passes video data (title, channel, views, date, thumbnail) via URL parameters.
-- Sidebar navigation works and highlights the current page.
-- Buttons (like, subscribe, clear history, download reports, playlist items, etc.) display demo alerts.
+Pull requests must pass all checks before merging.
 
-**How to run the prototype:**  
-Open the `prototype/` folder and double-click `index.html` (or use a local web server like Live Server in VS Code).
+### Code Standards
 
----
+- Follow the project [Constitution](.specify/memory/constitution.md)
+- Read [AGENTS.md](AGENTS.md) for implementation guidelines
+- API changes must update [API.md](API.md) first
+- All features require test coverage
 
-## 🛠 Tools & Technologies
+### Documentation
 
-| Area | Tools |
-|------|-------|
-| Documentation | Microsoft Word, Adobe Acrobat (PDF) |
-| Diagrams | Mermaid (exported to PNG) |
-| Prototype | HTML5, CSS3, Vanilla JavaScript |
-| Version control | Git + GitHub |
-| Local development | VS Code, Live Server |
+- [System Architecture](docs/System-Architecture-Document.md)
+- [Functional Requirements](docs/Functional.md)
+- [Non-Functional Requirements](docs/Non-Functional.md)
+- [Project Structure](STRUCTURE.md)
 
----
+## 📄 License
 
-## 👥 Team Roles
+This project is licensed under a Custom License - see the [LICENSE](LICENSE) file for details.
 
-- **Farazin Farahmand**  
-  - Writing Functional and Non-Functional requirements documents  
-  - Defining priorities and acceptance criteria  
-  - Maintaining revision history and document consistency  
+**Summary:**
+- ✅ Free for personal, educational, and non-commercial use
+- ✅ Attribution required (Mohammad Amin Haji Alirezaei)
+- ❌ Commercial use requires explicit permission
 
-- **Mohammad Amin Haji Alirezaei**  
-  - Designing and implementing the static HTML/CSS/JS prototype  
-  - Creating architecture, component, deployment, and DFD diagrams  
-  - Formatting the final System Architecture Document
+For commercial licensing inquiries, contact: m.a.hajialirezaei05@gmail.com
 
----
+## 👤 Contact
 
-## 📌 Important Notes for Submission
+**Mohammad Amin Haji Alirezaei**
 
-- The prototype is **completely static** – no backend or database is used.
-- All requirements documents include a **revision history** table and **priority** columns.
-- The diagrams are embedded as images in the System Architecture Document and also available in `docs/figures/`.
-- The project name **Namatube** and producer names appear in the footer of every HTML page.
-- This is a **pure analysis & design** project – implementation is not part of the scope.
+- Email: m.a.hajialirezaei05@gmail.com
+- Project Link: [https://github.com/mahajialirezaei/Namatube](https://github.com/mahajialirezaei/Namatube)
 
----
+## 🙏 Acknowledgments
 
-## 📬 Contact
-
-For any questions or feedback, please use the GitHub repository or contact the team.
-
-- **Mohammad Amin Haji Alirezaei** – m.a.hajialirezaei05@gmail.com  
+- Inspired by modern video sharing platforms
+- Built as part of System Analysis and Design coursework
+- Special thanks to contributors and the open-source community
 
 ---
 
-**Last Updated:** 2025-05-21  
-**README Version:** 1.0
+<div align="center">
+
+**Made with ❤️ by Mohammad Amin Haji Alirezaei**
+
+</div>
