@@ -1,3 +1,6 @@
 [submodule "NamaFront"]
 	path = NamaFront
 	url = https://github.com/mahajialirezaei/NamaFront.git
+[submodule "NamaBackend"]
+	path = NamaBackend
+	url = https://github.com/mahajialirezaei/NamaBackend.git
